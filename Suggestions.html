@@ -10,6 +10,17 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/zebra_datepicker@latest/dist/css/bootstrap/zebra_datepicker.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/zebra_datepicker@latest/dist/zebra_datepicker.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+
 </head>
 
 
@@ -57,38 +68,38 @@ position: relative;">
             </div>
             <div class="container d-flex align-items-center justify-content-center vh-100">
                 <div class="col-6">
-                    <form class="bg-body-tertiary p-4 shadow rounded" action="">
+                    <form class="bg-body-tertiary p-4 shadow rounded" action="" id="suggestionForm">
                         <h2 class="text-center mb-4 ">Have something to say?</h2>
                         <div class="row">
                             <div class="form-group mb-3 col">
                                 <label class="form-label" for="fName">First Name</label>
-                                <input class="form-control" type="text" id="fName" placeholder="Enter your first name"
-                                    required>
+                                <input class="form-control" type="text" id="fName" placeholder="Enter your first name">
                             </div>
                             <div class="form-group mb-3 col">
                                 <label class="form-label" for="lName">Last Name</label>
-                                <input class="form-control" type="text" id="lName" placeholder="Enter your last name"
-                                    required>
+                                <input class="form-control" type="text" id="lName" placeholder="Enter your last name">
                             </div>
                         </div>
                         <div class="form-group mb-3">
                             <label class="form-label" for="email">Email Address</label>
-                            <input class="form-control" type="email" id="email" placeholder="Enter your email" required>
+                            <input class="form-control" type="email" id="email" placeholder="Enter your email">
                         </div>
                         <div class="form-group mb-3">
                             <label for="phone">Phone Number</label>
-                            <input class="form-control" type="tel" id="phone" placeholder="05********"
-                                pattern="^\d{9,10}$" required>
+                            <input class="form-control" type="tel" id="phone" placeholder="05********">
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="date">Date</label>
+                            <input class="form-control" type="text" id="datepicker" placeholder="Date of feedback">
                         </div>
                         <div class="form-group mb-3">
                             <label for="subject">Subject</label>
-                            <input class="form-control" type="text" id="subject" placeholder="Subject of your feedback"
-                                required>
+                            <input class="form-control" type="text" id="subject" placeholder="Subject of your feedback">
                         </div>
                         <div class="form-group mb-3">
                             <label class="form-label" for="message">Your Message</label>
                             <textarea class="form-control" id="message" placeholder="Write your message here...."
-                                rows="6" required></textarea>
+                                rows="6"></textarea>
                         </div>
                         <button class="btn btn-outline-primary w-100" type="submit">Send
                         </button>
@@ -127,11 +138,123 @@ position: relative;">
     </footer>
 
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
+    <script>
+
+        $("#datepicker").Zebra_DatePicker({
+            format: 'M d ,Y'
+        });
+
+        $(document).ready(function () {
+            $("#suggestionForm").on('submit', function (e) {
+                e.preventDefault();
+
+                let firstName = $("#fName").val().trim();
+                let lastName = $("#lName").val().trim();
+                let email = $("#email").val().trim();
+                let phone = $("#phone").val().trim();
+                let date = $("#datepicker").val().trim();
+                let subject = $("#subject").val().trim();
+                let message = $("#message").val().trim();
+
+                if (firstName.length === 0) {
+                    Swal.fire({
+                        title: 'Required!',
+                        text: 'Please enter your first name.',
+                        icon: 'warning'
+                    })
+
+                }
+
+                else if (lastName.length === 0) {
+                    Swal.fire({
+                        title: 'Required!',
+                        text: 'Please enter your last name.',
+                        icon: 'warning'
+
+                    })
+
+                }
+
+                else if (email.length === 0) {
+                    Swal.fire({
+                        title: 'Required!',
+                        text: 'Please enter your email.',
+                        icon: 'warning'
+
+                    })
+
+                }
+
+                else if (!email.match(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)) {
+                    Swal.fire({
+                        title: 'Submission Error!',
+                        text: 'Please enter a valid email address. Example: example@domain.com',
+                        icon: 'error'
+
+                    })
+                }
 
 
-        </script>
+                else if (phone.length === 0) {
+                    Swal.fire({
+                        title: 'Required!',
+                        text: 'Please enter your phone number.',
+                        icon: 'warning'
+                    })
+
+                }
+
+                else if (!phone.match(/^\d{9,10}$/)) {
+                    Swal.fire({
+                        title: 'Submission Error!',
+                        text: 'Please enter a valid phone number with 9 to 10 digits. Example: 0512345678',
+                        icon: 'error'
+                    })
+                }
+
+                else if (date.length === 0) {
+                    Swal.fire({
+                        title: 'Required!',
+                        text: 'Please enter the date of your feedback.',
+                        icon: 'warning'
+                    });
+                }
+
+                else if (subject.length === 0) {
+                    Swal.fire({
+                        title: 'Required!',
+                        text: 'Please enter the subject of your feedback.',
+                        icon: 'warning'
+                    });
+
+                }
+
+                else if (message.length < 30) {
+                    Swal.fire({
+                        title: 'Attention!',
+                        text: 'Your message should be at least 30 characters long.',
+                        icon: 'warning'
+                    });
+
+                }
+                else {
+                    Swal.fire({
+                        title: 'Success!',
+                        text: 'Thank you ' + firstName + '!',
+                        icon: 'success'
+                    }).then(() => {
+                        this.submit();
+                    });
+                }
+
+
+            });
+
+
+        });
+
+
+    </script>
 </body>
 
 </html>
